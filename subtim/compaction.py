@@ -26,7 +26,7 @@ def NonDelay(ml,drawdown,z,LN,HC,Sfe,Sfv):#,Com,ComE,ComV):
         theta = []
         for lay in range(nlay):
             theta.append(-Pw * g * drawdown[lay])
-        return theta
+        return np.array(theta)
 
     theta = del_Estress(drawdown,Pw=62.42796529, g=240177996288.)
 
@@ -37,8 +37,8 @@ def NonDelay(ml,drawdown,z,LN,HC,Sfe,Sfv):#,Com,ComE,ComV):
     theta_pc = del_Estress(drawdown=pc_dd,Pw=62.42796529, g=240177996288.) # prconsolidation
     b = []
     for lay in range(nlay):
-        for Sk in range(len(Sfe)):
-            for i in range(len(drawdown)):
+        for i in range(len(drawdown)):
+            for Sk in range(len(LN)):
                 if theta[lay][i] < theta_pc[lay]:
                     S_k = Sfe[lay][Sk]
                 elif theta[lay][i] >= theta_pc[lay]:
@@ -47,13 +47,16 @@ def NonDelay(ml,drawdown,z,LN,HC,Sfe,Sfv):#,Com,ComE,ComV):
 
                 b.append(S_k * drawdown[i])
 
-    comp = np.zeros((nlay))
-    print(b[0])
+    comp = []
+    # print(b[0])
+    b = np.array(b)
+    # print(b.shape)
     for lay in range(nlay):
-        for i in range(len(b[lay])):
-          comp[lay] += b[lay][i]
-
-
+        comp.append(np.zeros((len(b[0]))))
+        comp[lay] += b[lay] * LN[lay]
+        #+= np.array(b[lay]) #.sum(axis=0)
+        # for i in range(len(b[lay])):
+        #   comp[lay] += b[lay][i]
 
     return comp
 

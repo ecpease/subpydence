@@ -8,10 +8,6 @@ sys.path.append(os.path.join('..'))
 import subtim.compaction as sub
 
 
-
-
-
-
 # from subtim import compaction
 
 
@@ -44,8 +40,6 @@ well = ttim.Well(ml,x,y,rw,tsandQ,res,layers=1,label='well')
 
 ml.solve()
 
-
-
 time = np.arange(0,365.26*10,365.25)
 h = ml.head(x,y,time,[0,1])
 
@@ -57,6 +51,7 @@ drawdown = [h[0][0] - h[0],h[1][1] - h[1]]
 
 
 LN = [[(180,165),(140,120)],[(90,80),(70,60),(65,50)]]
+LN = [2,3]
 HC = [200,100]
 
 ske = 5e-6
@@ -74,7 +69,7 @@ print(comp)
 #     print(b[i])
 
 
-exit()
+# exit()
 
 def compress_coef(dp,dv,V):
     """
@@ -134,18 +129,35 @@ def v_Estress(pw,g,h):
 
 
 fig, ax = plt.subplots()
-ax.plot(time/365.25,h[0])
+ax.plot(time/365.25,h[1])
 ax.grid()
 ax.set_xlabel('Years')
 ax.set_ylabel('Drawdown')
 
+fig, ax = plt.subplots()
+ax.plot(time/365.25,comp[1])
+ax.grid()
+ax.set_xlabel('Years')
+ax.set_ylabel('Compaction (feet)')
+fig.tight_layout()
 
 
-head_c = ml.contour(win=[-10,10,-10,10],t=time.max(),layers=1)
+head_c = ml.contour(win=[-10,10,-10,10],t=time.max(),layers=[0,1])
+xg = np.arange(-10,10,2)
+yg = xg
+headgrid = ml.headgrid(xg,yg,t=time.max(),layers=[0,1])
+# exit()
+# dd_c = head_c[1][0] - head_c[1]
+# comp_c = sub.NonDelay(ml,drawdown,z,LN,HC,Sfe,Sfv)#,Com,ComE,ComV)
 
+fig, ax = plt.subplots()
+plt.imshow(headgrid[0][0],cmap='jet')
+plt.colorbar()
+plt.title('Drawdown in Feet')
+print(headgrid.shape)
 
-
-
+drawdowngrid = headgrid[0] - headgrid
+compgrid = sub.NonDelay(ml,drawdowngrid,z,LN,HC,Sfe,Sfv)
 
 
 
