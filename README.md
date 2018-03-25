@@ -1,5 +1,4 @@
-# subtim
-# SubTim, A Multi-Layer, One-Dimensional Subsidence Package for TTim
+# subtim, A Multi-Layer, One-Dimensional Subsidence Package for TTim
 
 ## Introduction
 
@@ -42,6 +41,15 @@ To uninstall TTim type:
 
 SubTim requires **Python** 3.6 
 
+To install subtim,
+
+	git clone https://github.com/rosskush/subtim.git
+
+then in your script import sys and append a path to the subtim directory
+
+	import sys
+	sys.path.append(os.path.join('somepath','subtim')
+	import subtim
 
 **Dependencies:**
 
