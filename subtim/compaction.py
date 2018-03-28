@@ -3,19 +3,24 @@ from ttim.aquifer_parameters import param_3d, param_maq
 import numpy as np
 
 
-def NonDelay(drawdown,z,LN,HC,Sfe,Sfv): #,Com,ComE,ComV):
+def NonDelay(drawdown,z,LN,HC,Sfe,Sfv):
     """
 
     :param drawdown:
-    :param z: elevations of each each geological formation, top, botm1, botm1 etc...
-    :param LN: Number of delay beds in each geological unit.
-    :param HC: preconsolodation head
+    :param z: elevations of each each geological formation, top, botm1, botm1 etc... array of len nlay +1
+    :param LN: Number of delay beds in each geological unit. array of len nlay
+    :param HC: preconsolodation head, array of len nlay, contains the initial preconsolodation head.
     :param Sfe: skeletol elastic storage coefficient
     :param Sfv: skeletal inelastic storage coefficient
     :return:
     """
     z = np.array(z)
-    nlay = len(z) - 1
+    nlay = len(z) - 1 # get number of layers
+    i,elements = 0,['LN','HC','Sfe','Sfv']
+    for element in [LN,HC,Sfe,Sfv]:
+        if nlay != len(element):
+            raise ValueError(f'nlay: {nlay} != {elements[i]}: {len(element)}.')
+        i+=1
     def del_Estress(drawdown,Pw=62.42796529, g=240177996288.):
         """
 
@@ -50,7 +55,6 @@ def NonDelay(drawdown,z,LN,HC,Sfe,Sfv): #,Com,ComE,ComV):
     for lay in range(nlay):
         comp.append(np.zeros((len(b[0]))))
         comp[lay] += b[lay] * LN[lay]
-
     return comp
 
 def NonDelayGrid(drawdownGrid,z,LN,HC,Sfe,Sfv): #,Com,ComE,ComV):
@@ -93,7 +97,4 @@ def NonDelayGrid(drawdownGrid,z,LN,HC,Sfe,Sfv): #,Com,ComE,ComV):
         comp[lay] += b[lay] * LN[lay]
 
     return compGrid
-
-
-
 

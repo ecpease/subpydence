@@ -48,7 +48,7 @@ To install subtim,
 then in your script import sys and append a path to the subtim directory
 
 	import sys
-	sys.path.append(os.path.join('somepath','subtim')
+	sys.path.append(os.path.join('somepath','subtim'))
 	import subtim
 
 **Dependencies:**

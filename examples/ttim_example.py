@@ -59,7 +59,7 @@ skv = 3e-4
 Sfe = [[ske,ske],[ske,ske,ske]]
 Sfv = [[skv,skv],[skv,skv,skv]]
 
-comp = sub.NonDelay(ml,drawdown,z,LN,HC,Sfe,Sfv)#,Com,ComE,ComV)
+comp = sub.NonDelay(drawdown,z,LN,HC,Sfe,Sfv)#,Com,ComE,ComV)
 
 print(comp)
 # print(b)
@@ -157,7 +157,7 @@ plt.title('Drawdown in Feet')
 print(headgrid.shape)
 
 drawdowngrid = headgrid[0] - headgrid
-compgrid = sub.NonDelay(ml,drawdowngrid,z,LN,HC,Sfe,Sfv)
+compgrid = sub.NonDelayGrid(drawdowngrid,z,LN,HC,Sfe,Sfv)
 
 
 
