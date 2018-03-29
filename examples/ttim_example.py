@@ -164,19 +164,3 @@ compgrid = sub.NonDelayGrid(drawdowngrid,z,LN,HC,Sfe,Sfv)
 
 plt.show()
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

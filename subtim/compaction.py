@@ -69,26 +69,30 @@ def NonDelayGrid(drawdownGrid,z,LN,HC,Sfe,Sfv): #,Com,ComE,ComV):
         :param h:
         :return:
         """
-        theta = np.zeros((nlay))
+        theta = [] #np.zeros((nlay))
         for lay in range(nlay):
-            print(lay)
+            theta.append(np.zeros(nlay))
             theta[lay] = -Pw * g * drawdownGrid[lay]
         return theta
 
     theta = del_Estress(drawdownGrid, Pw=62.42796529, g=240177996288.)
     pc_dd = []
     for lay in range(nlay):
-        pc_dd = z[lay] - HC
+        pc_dd.append(z[lay] - HC)
 
     theta_pc = del_Estress(drawdownGrid=pc_dd, Pw=62.42796529, g=240177996288.)  # preconsolidation
     b = []
     for lay in range(nlay):
-        for i in range(len(drawdownGrid)):
+        for i in range(len(drawdownGrid)): # for each time
             for Sk in range(len(LN)):
-                if theta[lay][i] < theta_pc[lay]:
-                    S_k = Sfe[lay][Sk]
-                elif theta[lay][i] >= theta_pc[lay]:
-                    S_k = Sfv[lay][Sk]
+
+                # if theta[lay][i] < theta_pc[lay]:
+                #     S_k = Sfe[lay][Sk]
+                Sfe_locs = np.where(theta[lay][i] < theta_pc[lay])
+                Sfv_locs = np.where(theta[lay][i] >= theta_pc[lay])
+                # elif theta[lay][i] >= theta_pc[lay]:
+                #     S_k = Sfv[lay][Sk]
+
                 b.append(S_k * drawdownGrid[i])
     comp = []
     b = np.array(b)
