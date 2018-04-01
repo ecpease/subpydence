@@ -10,7 +10,7 @@ def NonDelay(drawdown,z,LN,HC,Sfe,Sfv):
     :param z: elevations of each each geological formation, top, botm1, botm1 etc... array of len nlay +1
     :param LN: Number of delay beds in each geological unit. array of len nlay
     :param HC: preconsolodation head, array of len nlay, contains the initial preconsolodation head.
-    :param Sfe: skeletol elastic storage coefficient
+    :param Sfe: skeletal elastic storage coefficient
     :param Sfv: skeletal inelastic storage coefficient
     :return:
     """
