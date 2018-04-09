@@ -42,6 +42,7 @@ def NonDelay(drawdown,z,LN,HC,Sfe,Sfv):
 
     theta_pc = del_Estress(drawdown=pc_dd,Pw=62.42796529, g=240177996288.) # preconsolidation
     b = []
+    print(theta_pc)
     for lay in range(nlay):
         for i in range(len(drawdown)):
             for Sk in range(len(LN)):
@@ -79,20 +80,22 @@ def NonDelayGrid(drawdownGrid,z,LN,HC,Sfe,Sfv): #,Com,ComE,ComV):
     pc_dd = []
     for lay in range(nlay):
         pc_dd.append(z[lay] - HC)
-
-    theta_pc = del_Estress(drawdownGrid=pc_dd, Pw=62.42796529, g=240177996288.)  # preconsolidation
+    fig, ax = plt.subplots()
+    plt.imshow()
+    theta_pc = del_Estress(drawdownGrid=pc_dd, Pw=62.42796529, g=240177996288.)  # pre consolidation
     b = []
+    print(theta_pc)
     for lay in range(nlay):
         for i in range(len(drawdownGrid)): # for each time
             for Sk in range(len(LN)):
-
                 # if theta[lay][i] < theta_pc[lay]:
                 #     S_k = Sfe[lay][Sk]
+                print(theta[lay][i].shape)
+                print(theta_pc[lay].shape)
                 Sfe_locs = np.where(theta[lay][i] < theta_pc[lay])
                 Sfv_locs = np.where(theta[lay][i] >= theta_pc[lay])
                 # elif theta[lay][i] >= theta_pc[lay]:
                 #     S_k = Sfv[lay][Sk]
-
                 b.append(S_k * drawdownGrid[i])
     comp = []
     b = np.array(b)
