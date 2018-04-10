@@ -45,17 +45,24 @@ def NonDelay(drawdown,z,LN,HC,Sfe,Sfv):
     print(theta_pc)
     for lay in range(nlay):
         for i in range(len(drawdown)):
-            for Sk in range(len(LN)):
+            for Sk in range(LN[lay]):
                 if theta[lay][i] < theta_pc[lay]:
                     S_k = Sfe[lay][Sk]
                 elif theta[lay][i] >= theta_pc[lay]:
                     S_k = Sfv[lay][Sk]
                 b.append(S_k * drawdown[i])
+
+
+
     comp = []
     b = np.array(b)
+    print(b.shape)
+    exit()
+
     for lay in range(nlay):
         comp.append(np.zeros((len(b[0]))))
         comp[lay] += b[lay] * LN[lay]
+
     return comp
 
 def NonDelayGrid(drawdownGrid,z,LN,HC,Sfe,Sfv): #,Com,ComE,ComV):

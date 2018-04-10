@@ -11,10 +11,16 @@ import subtim.compaction as sub
 # from subtim import compaction
 
 
-z = [200,100,0]
-kaq = [1e-6,10] # conductivity
-Saq = [1e-10,1e-7] # Storage coefficient
-kzoverkh = 1
+# z = [200,100,0]
+# kaq = [1e-6,10] # conductivity
+# Saq = [1e-10,1e-7] # Storage coefficient
+# kzoverkh = 1
+
+
+z = [87,-460,-1565,-1895,-2922]
+kaq = [15.56782378,	7.02081448,	0.01093212113,	1.87681798]
+Saq = [0.006000000052,	0.000360000005,	0.00033000001,	0.000347399997]
+kzoverkh = .1
 
 
 ten_years = 10 * 365.25
@@ -25,8 +31,8 @@ ml = ttim.Model3D(kaq,z,Saq,kzoverkh,tmin=1e-6,tmax=ten_years)
 
 print(ml.tmin)
 
-
-Qgpm = 100.0
+Qgpd= 4000000.0
+Qgpm = Qgpd / (60*24)
 Qcfd = (Qgpm / 7.4801) * (60*24)
 
 tsandQ = [(0,0),(365.25,Qcfd)]
@@ -35,31 +41,56 @@ res = .1
 x,y = 0.,0.
 rw = (12.75/12)*.5
 
-well = ttim.Well(ml,x,y,rw,tsandQ,res,layers=1,label='well')
+well = ttim.Well(ml,x,y,rw,tsandQ,res,layers=3,label='well')
 
 
 ml.solve()
 
 time = np.arange(0,365.26*10,365.25)
-h = ml.head(x,y,time,[0,1])
+h = ml.head(x,y,time,[0,1,2,3])
 
 
 
 
 # drawdown = h[0][0]-h[0]
-drawdown = [h[0][0] - h[0],h[1][1] - h[1]]
+drawdown = [] #[h[0][0] - h[0],h[1][1] - h[1]]
+for lay in range(len(h)):
+    drawdown.append(h[0][lay]-h[lay])
+drawdown = np.array(drawdown)
+print(drawdown.shape)
+# exit()
 
 
-LN = [[(180,165),(140,120)],[(90,80),(70,60),(65,50)]]
-LN = [2,3]
-HC = [200,100]
+
+# LN = [[(180,165),(140,120)],[(90,80),(70,60),(65,50)]]
+
+LN = [2,1,1,1]
+HC = [87,87,87,87]
 
 ske = 5e-6
 skv = 3e-4
 Sfe = [[ske,ske],[ske,ske,ske]]
 Sfv = [[skv,skv],[skv,skv,skv]]
 
-comp = sub.NonDelay(drawdown,z,LN,HC,Sfe,Sfv)#,Com,ComE,ComV)
+
+sfe = [0.000174519999,	0.000115000003,	1.70E-07,	6.30E-06]
+sfv = [0.01745199971,	0.01150000002,	1.70E-05,	0.000630000024]
+
+Sfe_ls, Sfv_ls = [], []
+for i in range(len(LN)):
+    print(LN[i])
+    e,v = [], []
+    for ln in range(LN[i]):
+        e.append(sfe[i])
+        v.append(sfv[i])
+    Sfe_ls.append(e)
+    Sfv_ls.append(v)
+
+print(Sfe_ls)
+
+
+
+comp = sub.NonDelay(drawdown,z,LN,HC,Sfe_ls,Sfv_ls) #,Com,ComE,ComV)
 
 print(comp)
 # print(b)
@@ -129,13 +160,13 @@ def v_Estress(pw,g,h):
 
 
 fig, ax = plt.subplots()
-ax.plot(time/365.25,h[1])
+ax.plot(time/365.25,h[3])
 ax.grid()
 ax.set_xlabel('Years')
 ax.set_ylabel('Drawdown')
 
 fig, ax = plt.subplots()
-ax.plot(time/365.25,comp[1])
+ax.plot(time/365.25,comp[3])
 ax.grid()
 ax.set_xlabel('Years')
 ax.set_ylabel('Compaction (feet)')
@@ -157,7 +188,7 @@ plt.title('Drawdown in Feet')
 print(headgrid.shape)
 
 drawdowngrid = headgrid[0] - headgrid
-compgrid = sub.NonDelayGrid(drawdowngrid,z,LN,HC,Sfe,Sfv)
+# compgrid = sub.NonDelayGrid(drawdowngrid,z,LN,HC,Sfe,Sfv)
 
 
 
