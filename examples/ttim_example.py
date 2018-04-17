@@ -31,7 +31,7 @@ ml = ttim.Model3D(kaq,z,Saq,kzoverkh,tmin=1e-6,tmax=ten_years)
 
 print(ml.tmin)
 
-Qgpd= 4000000.0
+Qgpd = 5000000.0
 Qgpm = Qgpd / (60*24)
 Qcfd = (Qgpm / 7.4801) * (60*24)
 
@@ -89,7 +89,7 @@ for i in range(len(LN)):
 print(Sfe_ls)
 
 
-
+# exit()
 comp = sub.NonDelay(drawdown,z,LN,HC,Sfe_ls,Sfv_ls) #,Com,ComE,ComV)
 
 print(comp)
@@ -160,16 +160,19 @@ def v_Estress(pw,g,h):
 
 
 fig, ax = plt.subplots()
-ax.plot(time/365.25,h[3])
+for lay in range(len(comp)):
+    ax.plot(time/365.25,h[lay], label = f'layer {lay+1}')
 ax.grid()
 ax.set_xlabel('Years')
 ax.set_ylabel('Drawdown')
 
 fig, ax = plt.subplots()
-ax.plot(time/365.25,comp[3])
+for lay in range(len(comp)):
+    ax.plot(time/365.25,comp[lay],label=f'layer {lay+1}')
 ax.grid()
 ax.set_xlabel('Years')
 ax.set_ylabel('Compaction (feet)')
+ax.legend()
 fig.tight_layout()
 
 
