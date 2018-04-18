@@ -5,8 +5,8 @@ import os
 import sys
 
 sys.path.append(os.path.join('..'))
-import subtim.compaction as sub
 
+import subpydence.compaction as sub
 
 # from subtim import compaction
 
@@ -58,7 +58,7 @@ for lay in range(len(h)):
     drawdown.append(h[0][lay]-h[lay])
 drawdown = np.array(drawdown)
 print(drawdown.shape)
-# exit()
+# 
 
 
 
@@ -89,7 +89,7 @@ for i in range(len(LN)):
 print(Sfe_ls)
 
 
-# exit()
+
 comp = sub.NonDelay(drawdown,z,LN,HC,Sfe_ls,Sfv_ls) #,Com,ComE,ComV)
 
 print(comp)
@@ -100,7 +100,7 @@ print(comp)
 #     print(b[i])
 
 
-# exit()
+
 
 def compress_coef(dp,dv,V):
     """
@@ -180,7 +180,7 @@ head_c = ml.contour(win=[-10,10,-10,10],t=time.max(),layers=[0,1])
 xg = np.arange(-10,10,2)
 yg = xg
 headgrid = ml.headgrid(xg,yg,t=time.max(),layers=[0,1])
-# exit()
+
 # dd_c = head_c[1][0] - head_c[1]
 # comp_c = sub.NonDelay(ml,drawdown,z,LN,HC,Sfe,Sfv)#,Com,ComE,ComV)
 

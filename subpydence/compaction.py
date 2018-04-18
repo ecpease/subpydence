@@ -16,6 +16,12 @@ def NonDelay(drawdown,z,LN,HC,Sfe,Sfv):
     """
     z = np.array(z)
     nlay = len(z) - 1 # get number of layers
+
+    thick = []
+    for t in range(1,len(z)):
+        thick.append(z[t-1]-z[t])
+    # print(thick)
+    # exit()
     i,elements = 0,['LN','HC','Sfe','Sfv']
     for element in [LN,HC,Sfe,Sfv]:
         if nlay != len(element):
@@ -41,8 +47,8 @@ def NonDelay(drawdown,z,LN,HC,Sfe,Sfv):
         pc_dd = z[lay] - HC
 
     theta_pc = del_Estress(drawdown=pc_dd,Pw=62.42796529, g=240177996288.) # preconsolidation
-    b = []
-    print(np.array(theta_pc).shape)
+    # b = []
+    # print(theta_pc)
     # for lay in range(nlay):
     #     for i in range(len(drawdown)):
     #         for Sk in range(LN[lay]):
@@ -50,7 +56,7 @@ def NonDelay(drawdown,z,LN,HC,Sfe,Sfv):
     #                 S_k = Sfe[lay][Sk]
     #             elif theta[lay][i] >= theta_pc[lay]:
     #                 S_k = Sfv[lay][Sk]
-    #             b.append(S_k * drawdown[i])
+    #             b.append(S_k * drawdown[i]*thick[lay])
 
     b = np.zeros(drawdown.shape)
     # print(b.shape)
@@ -64,7 +70,7 @@ def NonDelay(drawdown,z,LN,HC,Sfe,Sfv):
             if theta[lay][i] < theta_pc[lay]:
                 # S_k = Sfe[lay]
                 # S_k[lay] = Sfe[lay]
-                S_k = np.array(Sfe[lay]).mean() # need to change this to composite mean
+                S_k = np.array(Sfe[lay]).mean()  # need to change this to composite mean
             elif theta[lay][i] >= theta_pc[lay]:
                 # S_k = Sfv[lay]
                 # S_k[lay] = Sfv[lay]
@@ -72,20 +78,9 @@ def NonDelay(drawdown,z,LN,HC,Sfe,Sfv):
             # b.append(S_k * drawdown[i])
             # print(S_k)
             # exit()
-            thing = S_k * drawdown[lay][i] * 10
+            thing = S_k * drawdown[lay][i] * thick[lay]
             b[lay][i] = thing
 
-    #         try:
-    #             print('num of times', ii)
-    #             ii+=1
-    #             print(lay,i)
-    #             b[lay][i] = S_k[lay] * drawdown[lay][i]
-    #         except:
-    #             print('lay',lay)
-    #             print('s_k', S_k)# print('')
-    #             print('dd', len(drawdown))
-    #             exit()
-    #
     comp = []
     b = np.array(b)
     print(b.shape)
