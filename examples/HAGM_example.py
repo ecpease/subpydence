@@ -194,10 +194,10 @@ ax.legend()
 fig.tight_layout()
 fig.savefig('tot_comp.png')
 
-head_c = ml.contour(win=[-10,10,-10,10],t=time.max(),layers=[0,1])
-xg = np.arange(-10,10,2)
-yg = xg
-headgrid = ml.headgrid(xg,yg,t=time.max(),layers=[0,1])
+# head_c = ml.contour(win=[-10,10,-10,10],t=time.max(),layers=[0,1])
+# xg = np.arange(-10,10,2)
+# yg = xg
+# headgrid = ml.headgrid(xg,yg,t=time.max(),layers=[0,1])
 
 # dd_c = head_c[1][0] - head_c[1]
 # comp_c = sub.NonDelay(ml,drawdown,z,LN,HC,Sfe,Sfv)#,Com,ComE,ComV)
@@ -208,7 +208,7 @@ headgrid = ml.headgrid(xg,yg,t=time.max(),layers=[0,1])
 # plt.title('Drawdown in Feet')
 # print(headgrid.shape)
 
-drawdowngrid = headgrid[0] - headgrid
+# drawdowngrid = headgrid[0] - headgrid
 # compgrid = sub.NonDelayGrid(drawdowngrid,z,LN,HC,Sfe,Sfv)
 
 
