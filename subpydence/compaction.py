@@ -66,20 +66,26 @@ def NonDelay(drawdown,z,LN,HC,Sfe,Sfv):
     # exit()
     ii = 0
     for lay in range(nlay):
+        lowH = [0]
         for i in range(len(drawdown[lay])):
-            if theta[lay][i] < theta_pc[lay]:
-                # S_k = Sfe[lay]
-                # S_k[lay] = Sfe[lay]
-                S_k = np.array(Sfe[lay]).mean()  # need to change this to composite mean
-            elif theta[lay][i] >= theta_pc[lay]:
-                # S_k = Sfv[lay]
-                # S_k[lay] = Sfv[lay]
-                S_k = np.array(Sfv[lay]).mean()
-            # b.append(S_k * drawdown[i])
-            # print(S_k)
-            # exit()
-            thing = S_k * drawdown[lay][i] * thick[lay]
-            b[lay][i] = thing
+            lowH_value = max(lowH)
+            if drawdown[lay][i] > lowH_value:
+                if theta[lay][i] < theta_pc[lay]:
+                    # S_k = Sfe[lay]
+                    # S_k[lay] = Sfe[lay]
+                    S_k = np.array(Sfe[lay]).mean()  # need to change this to composite mean
+                elif theta[lay][i] >= theta_pc[lay]:
+                    # S_k = Sfv[lay]
+                    # S_k[lay] = Sfv[lay]
+                    S_k = np.array(Sfv[lay]).mean()
+                # b.append(S_k * drawdown[i])
+                # print(S_k)
+                # exit()
+                thing = S_k * drawdown[lay][i] #* thick[lay]
+                b[lay][i] = thing
+            else:
+                b[lay][i] = 0
+            lowH.append(drawdown[lay][i])
 
     comp = []
     b = np.array(b)

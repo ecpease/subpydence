@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 import sys
-
+import pandas as pd
 sys.path.append(os.path.join('..'))
 
 import subpydence.compaction as sub
@@ -58,6 +58,16 @@ for lay in range(len(h)):
     drawdown.append(h[0][lay]-h[lay])
 drawdown = np.array(drawdown)
 print(drawdown.shape)
+
+drawdown = []
+ddDF = pd.read_csv('Drawdown.csv')
+for lay in range(4):
+    drawdown.append(ddDF[f'layer_{1+lay}'].tolist())
+drawdown = np.array(drawdown)
+print(drawdown.shape)
+
+time = ddDF['Time']
+
 # 
 
 
@@ -86,13 +96,13 @@ for i in range(len(LN)):
     Sfe_ls.append(e)
     Sfv_ls.append(v)
 
-print(Sfe_ls)
+# print(Sfe_ls)
 
 
 
 comp = sub.NonDelay(drawdown,z,LN,HC,Sfe_ls,Sfv_ls) #,Com,ComE,ComV)
 
-print(comp)
+# print(comp)
 # print(b)
 # print(b.shape)
 #
@@ -159,16 +169,24 @@ def v_Estress(pw,g,h):
 
 
 
-fig, ax = plt.subplots()
-for lay in range(len(comp)):
-    ax.plot(time/365.25,h[lay], label = f'layer {lay+1}')
-ax.grid()
-ax.set_xlabel('Years')
-ax.set_ylabel('Drawdown')
+# fig, ax = plt.subplots()
+# for lay in range(len(comp)):
+#     ax.plot(time/365.25,h[lay], label = f'layer {lay+1}')
+# ax.grid()
+# ax.set_xlabel('Years')
+# ax.set_ylabel('Drawdown')
+data = {}
+for lay in range(len(drawdown)):
+    data[f'layer_{lay+1}'] = comp[lay]
+compDF = pd.DataFrame(data)
 
 fig, ax = plt.subplots()
+compDF['all_lays'] = 0
 for lay in range(len(comp)):
-    ax.plot(time/365.25,comp[lay],label=f'layer {lay+1}')
+    ax.plot(time/365.25,compDF[f'layer_{lay+1}'].cumsum(),label=f'layer {lay+1}')
+    compDF['all_lays'] += compDF[f'layer_{lay+1}'].cumsum()
+
+ax.plot(time/365.25,compDF['all_lays'],label=f'all layer')
 ax.grid()
 ax.set_xlabel('Years')
 ax.set_ylabel('Compaction (feet)')
