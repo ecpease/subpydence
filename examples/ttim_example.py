@@ -59,14 +59,14 @@ for lay in range(len(h)):
 drawdown = np.array(drawdown)
 print(drawdown.shape)
 
-drawdown = []
-ddDF = pd.read_csv('Drawdown.csv')
-for lay in range(4):
-    drawdown.append(ddDF[f'layer_{1+lay}'].tolist())
-drawdown = np.array(drawdown)
-print(drawdown.shape)
-
-time = ddDF['Time']
+# drawdown = []
+# ddDF = pd.read_csv('Drawdown.csv')
+# for lay in range(4):
+#     drawdown.append(ddDF[f'layer_{1+lay}'].tolist())
+# drawdown = np.array(drawdown)
+# print(drawdown.shape)
+#
+# time = ddDF['Time']
 
 # 
 
@@ -110,71 +110,12 @@ comp = sub.NonDelay(drawdown,z,LN,HC,Sfe_ls,Sfv_ls) #,Com,ComE,ComV)
 #     print(b[i])
 
 
-
-
-def compress_coef(dp,dv,V):
-    """
-
-    :param dp:
-    :param dv:
-    :param V:
-    :return: a
-    """
-    a = dv/V * (1/dp)
-    return a
-
-def ff(delh,a,b):
-    """
-
-    :param delh: change in hydraulic head in the aquifer
-    :param a: Aquifer compressibility coef, (calculated from one or more interbeds)
-    :param b:
-    :return: delb
-    """
-    delb = delh * a *b
-    return delb
-
-
-
-def pore_p(h,he,g=32.17405,Pw=62.42796529):
-    """
-
-    :param h: head ft
-    :param he: elevation head relative to datum
-    :param g: gravity in ft/s^2
-    :param Pw: lb/ft^3
-    :return:
-    """
-    # 32.17405 feet per second per second.
-    # h = (p)/(Pw*g) + he
-    p = (h - he)/(Pw*g)
-    return p
-
-def v_Estress(pw,g,h):
-    """
-    theta = vertical effective stress (positive for increase)
-    :param pw:
-    :param g:
-    :param h:
-    :return:
-    """
-    sh= h[0]
-    delh = []
-    for i in h:
-        delh.append(sh-i)
-    theta = -pw * g * delh
-    return theta
-
-
-
-
-
-# fig, ax = plt.subplots()
-# for lay in range(len(comp)):
-#     ax.plot(time/365.25,h[lay], label = f'layer {lay+1}')
-# ax.grid()
-# ax.set_xlabel('Years')
-# ax.set_ylabel('Drawdown')
+fig, ax = plt.subplots()
+for lay in range(len(comp)):
+    ax.plot(time/365.25,h[lay], label = f'layer {lay+1}')
+ax.grid()
+ax.set_xlabel('Years')
+ax.set_ylabel('Drawdown')
 data = {}
 for lay in range(len(drawdown)):
     data[f'layer_{lay+1}'] = comp[lay]
@@ -194,21 +135,34 @@ ax.legend()
 fig.tight_layout()
 fig.savefig('tot_comp.png')
 
-head_c = ml.contour(win=[-10,10,-10,10],t=time.max(),layers=[0,1])
-xg = np.arange(-10,10,2)
+head_c = ml.contour(win=[-10, 10, -10, 10],t=time.max(),layers=[0, 1, 2, 3])
+xg = np.arange(-10, 10, 1)
 yg = xg
-headgrid = ml.headgrid(xg,yg,t=time.max(),layers=[0,1])
+fig, ax = plt.subplots()
+headgrid = ml.headgrid(xg,yg,t=time.max(),layers=[0,1,2,3])
+
+
+
+
+
 
 # dd_c = head_c[1][0] - head_c[1]
 # comp_c = sub.NonDelay(ml,drawdown,z,LN,HC,Sfe,Sfv)#,Com,ComE,ComV)
-
-# fig, ax = plt.subplots()
-# plt.imshow(headgrid[0][0],cmap='jet')
-# plt.colorbar()
-# plt.title('Drawdown in Feet')
-# print(headgrid.shape)
-
 drawdowngrid = headgrid[0] - headgrid
+
+fig, ax = plt.subplots()
+plt.imshow(drawdowngrid[3][0],cmap='jet')
+plt.colorbar()
+plt.title('Drawdown in Feet')
+print(headgrid.shape)
+
+
+
+
+
+
+
+
 # compgrid = sub.NonDelayGrid(drawdowngrid,z,LN,HC,Sfe,Sfv)
 
 
