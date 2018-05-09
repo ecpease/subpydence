@@ -183,14 +183,15 @@ compDF = pd.DataFrame(data)
 fig, ax = plt.subplots()
 compDF['all_lays'] = 0
 for lay in range(len(comp)):
-    ax.plot(time-10000,compDF[f'layer_{lay+1}'].cumsum(),label=f'layer {lay+1}')
+    ax.plot(time-10000,compDF[f'layer_{lay+1}'].cumsum(),label=f'Model Layer {lay+1}')
     compDF['all_lays'] += compDF[f'layer_{lay+1}'].cumsum()
 
-ax.plot(time-10000,compDF['all_lays'],label=f'all layer')
+ax.plot(time-10000,compDF['all_lays'],label=f'Sum of all Model Layers')
 ax.grid()
-ax.set_xlabel('Years')
-ax.set_ylabel('Compaction (feet)')
+ax.set_xlabel('Years', size=14)
+ax.set_ylabel('Compaction (feet)', size=14)
 ax.legend()
+plt.title('Compaction per Layer for Subpydence in Houston, TX', size=16)
 fig.tight_layout()
 fig.savefig('tot_comp.png')
 
