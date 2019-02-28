@@ -6,9 +6,7 @@ import sys
 import pandas as pd
 sys.path.append(os.path.join('..'))
 
-import subpydence.compaction as sub
-
-# from subtim import compaction
+import ttim.compaction as sub
 
 
 # z = [200,100,0]

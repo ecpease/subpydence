@@ -20,14 +20,13 @@ def NonDelay(drawdown,z,LN,HC,Sfe,Sfv):
     thick = []
     for t in range(1,len(z)):
         thick.append(z[t-1]-z[t])
-    # print(thick)
-    # exit()
+
     i,elements = 0,['LN','HC','Sfe','Sfv']
     for element in [LN,HC,Sfe,Sfv]:
         if nlay != len(element):
             raise ValueError(f'nlay: {nlay} != {elements[i]}: {len(element)}.')
         i+=1
-    def del_Estress(drawdown,Pw=62.42796529, g=240177996288.):
+    def del_Estress(drawdown, Pw=62.42796529, g=240177996288.):
         """
 
         theta = vertical effective stress (positive for increase)

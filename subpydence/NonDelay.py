@@ -1,7 +1,5 @@
 import numpy as np
 
-
-
 enums = [1,1,1]
 
 dhcEnum, vkEnum, sfEnum = enums
