@@ -1,9 +1,9 @@
-# subtim, A Multi-Layer, One-Dimensional Subsidence Package for TTim
+# SubPydence, A Multi-Layer, One-Dimensional Subsidence Model
 
 ## Introduction
 
-SubTim is a subsidence package for the computer program, TTim, through which transient multi-layer flow with analytical elements can be modeled.
-SubTim consists of a library of Python scripts that add onto TTim, which is written in Python scripts with FORTRAN extensions for increased performance.
+SubPydence is a subsidence package built off of the modeling program, TTim, through which transient multi-layer flow with analytical elements can be modeled.
+SubPydence consists of a library of Python scripts that add onto TTim, which is written in Python scripts with FORTRAN extensions for increased performance.
 
 ## TTim Installation
 
@@ -23,7 +23,7 @@ To install TTim, open a command prompt and type:
 
 To update TTim type:
 
-	pip install trim —upgrade
+	pip install ttim —upgrade
 
 To uninstall TTim type:
 
@@ -35,45 +35,45 @@ To uninstall TTim type:
 	import ttim.ttimtest
 
 
-## SubTim Installation
+## SubPydence Installation
 
 **Python versions:**
 
-SubTim requires **Python** 3.6 
+SubPydence requires **Python** 3.6 
 
-To install subtim,
+To install subpydence,
 
-	git clone https://github.com/rosskush/subtim.git
+	git clone https://github.com/ecpease/subpydence.git
 
-then in your script import sys and append a path to the subtim directory
+then in your script import sys and append a path to the subpydence directory
 
 	import sys
-	sys.path.append(os.path.join('somepath','subtim'))
-	import subtim
+	sys.path.append(os.path.join('somepath','subpydence'))
+	import subpydence
 
 **Dependencies:**
 
-Additional dependencies require **ttim** version xxx (or higher), **os** version xxxx (or higher), and 
+Additional dependencies require **ttim** version 0.4 (or higher), **os** version xxxx (or higher), and 
 **sys** version xxx (or higher).
 
 **For base Python distributions:**
 
-To install SubTim, open a command prompt and type:
+To install SubPydence, open a command prompt and type:
 
-	pip install subtim
+	pip install subpydence
 
-To update SubTim type:
+To update SubPydence type:
 
-	pip install subtim —upgrade
+	pip install subpydence —upgrade
 
-To uninstall SubTim type:
+To uninstall SubPydence type:
 
-	pip uninstall subtim
+	pip uninstall subpydence
 
 **Testing installation:**
 
 	python
-	import ttim.subtimtest
+	import ttim.subpydencetest
 
 ## Documentation
 
@@ -82,10 +82,7 @@ To uninstall SubTim type:
 
 ## Citation
 
-We ask that if you found TTim or SubTim useful to please include these citations in your papers:
+We ask that if you found TTim (or SubPydence) useful to please include these citations in your papers:
 
 * M. Bakker. 2013. Semi-analytic modeling of transient multi-layer flow with TTIm. Hydrogeology Journal, 21: 935-943.
 * M. Bakker. 2013. Analytic modeling of transient multi-layer flow.  In: Advances in Hydrogeology, edited by P Mishra and K Kuhlman, Springer, Heidelberg, 95-114.
-
-
-
